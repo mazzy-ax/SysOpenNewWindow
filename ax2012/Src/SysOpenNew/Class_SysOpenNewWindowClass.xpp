@@ -1,0 +1,41 @@
+
+    TreeNode usingTreeNode(TreeNode _treeNode)
+    {
+        TreeNode treeNodeToOpen;
+        SysDictClass dictClass;
+        MenuFunction menuFunction;
+
+        switch (_treeNode.TreeNodeType().id())
+        {
+            case #NT_CLASS:     // Class - open the parent
+                dictClass = new SysDictClass(_treeNode.applObjectId());
+                if (dictClass && dictClass.extend())
+                {
+                    dictClass = new SysDictClass(dictClass.extend());
+                    if (dictClass)
+                    {
+                        treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+dictClass.name());
+                    }
+                }
+                break;
+
+            case #NT_FUNCITEM:  // Menu Items
+                menuFunction = _treeNode;
+                if (menuFunction.objectType() == UtilElementType::Class &&    // Class
+                    menuFunction.object())
+                {
+                    treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+menuFunction.object());
+                }
+                break;
+
+            case #NT_SERVICE:
+                dictClass = new SysDictClass(className2Id(_treeNode.AOTgetProperty('Class')));
+                if (dictClass)
+                {
+                    treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+dictClass.name());
+                }
+
+        }
+
+        return treeNodeToOpen;
+    }

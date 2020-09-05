@@ -1,0 +1,1910 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: FTM
+
+; Microsoft Dynamics AX MENUITEM : SysOpenNewWindowQuery unloaded
+; --------------------------------------------------------------------------------
+  VERSION 1
+  
+  MENUITEM #SysOpenNewWindowQuery
+    Type: 3
+    PROPERTIES
+      Name                #SysOpenNewWindowQuery
+      Label               #Open used Query
+      HelpText            #Open a new window with the related Query.
+      ObjectType          #Class
+      Object              #SysOpenNewWindowQuery
+      ConfigurationKey    #SysDevelopmentXPP
+      SecurityKey         #SysDevelopment
+      ViewUserLicense     #Enterprise
+      MaintainUserLicense #Enterprise
+      WebAccess           #None
+      Origin              #{3F76A814-7E1F-4A04-B5D4-EC560A7CDC60}
+    ENDPROPERTIES
+    
+  ENDMENUITEM
+  
+
+***Element: FTM
+
+; Microsoft Dynamics AX MENUITEM : SysOpenNewWindowService unloaded
+; --------------------------------------------------------------------------------
+  VERSION 1
+  
+  MENUITEM #SysOpenNewWindowService
+    Type: 3
+    PROPERTIES
+      Name                #SysOpenNewWindowService
+      Label               #Open used Service
+      HelpText            #Open a new window with the related Service.
+      ObjectType          #Class
+      Object              #SysOpenNewWindowService
+      ConfigurationKey    #SysDevelopmentXPP
+      SecurityKey         #SysDevelopment
+      ViewUserLicense     #Enterprise
+      MaintainUserLicense #Enterprise
+      WebAccess           #None
+      Origin              #{B0BCD328-52EF-4AE4-B2F8-473B9E8EC99D}
+    ENDPROPERTIES
+    
+  ENDMENUITEM
+  
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: SysContextMenu unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #SysContextMenu
+    PROPERTIES
+      Name                #SysContextMenu
+      RunOn               #Client
+      Origin              #{2D0E03C8-0000-1000-FB09-5DBF82A26477}
+      LegacyId            #968
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #verifyItem
+        #/// <summary>
+        #///    Verifies that the command can be displayed in the context menu.
+        #/// </summary>
+        #/// <param name="menuItemName">
+        #///    The name of the command.
+        #/// </param>
+        #/// <param name="menuItemType">
+        #///    The type of the command.
+        #/// </param>
+        #/// <returns>
+        #///    1 if the command can be displayed; otherwise 0.
+        #/// </returns>
+        #public int verifyItem(identifierName menuItemName, MenuItemType menuItemType)
+        #{
+        #    #resAppl
+        #    #define.pathProjects('<\\\\Projects\\\\')
+        #    #define.pathMethods('\\\\Methods>')
+        #
+        #    boolean         docNode;
+        #    UtilEntryLevel  utilEntryLevel;
+        #    ClassNode       classNode;
+        #    TreeNode        parentNode;
+        #    SysTestable     testable;
+        #    ListEnumerator  listEnumerator;
+        #    int firstNodeTypeId;
+        #
+        #    if (!firstNode ||
+        #        !this.selectionCount())
+        #    {
+        #        return 0;
+        #    }
+        #
+        #    if (strStartsWith(firstNode.treeNodePath(), #SystemDocPath))
+        #    {
+        #        docNode = true;
+        #    }
+        #
+        #    firstNodeTypeId = firstNode.treeNodeType().id();
+        #
+        #    switch (menuItemType)
+        #    {
+        #
+        #        case MenuItemType::Display:
+        #            switch (menuItemName)
+        #            {
+        #                                 // Security Debug Tool:
+        #                // Only show SecObjectsInRole on role nodes under /security/roles
+        #                //
+        #                case menuitemDisplayStr(SysSecObjectsInRole):
+        #                    if ( this.selectionCount() == 1 )
+        #                    {
+        #                        if (
+        #                         _firstType == UtilElementType::SecRole
+        #                         ||
+        #                         _firstType == UtilElementType::SecDuty
+        #                         ||
+        #                         _firstType == UtilElementType::SecPrivilege
+        #                         ||
+        #                         _firstType == UtilElementType::ActionTool
+        #                         ||
+        #                         _firstType == UtilElementType::DisplayTool
+        #                         ||
+        #                         _firstType == UtilElementType::OutputTool
+        #                         ||
+        #                         _firstType == UtilElementType::WebUrlItem
+        #                         ||
+        #                         _firstType == UtilElementType::WebActionItem
+        #                         ||
+        #                         _firstType == UtilElementType::WebManagedContentItem
+        #                         ||
+        #                         firstNodeTypeId == #NT_OPERATION
+        #                         )
+        #                        {
+        #                            return 1;
+        #                        }
+        #                    }
+        #                    return 0;
+        #                //
+        #                // Security Debug Tool:
+        #                // Only show SecObjectsAnalyze on role nodes under
+        #                //
+        #                case menuitemDisplayStr(SysSecObjectsAnalyze):
+        #                    if ( this.selectionCount() == 1 )
+        #                    {
+        #                        if (
+        #                         _firstType == UtilElementType::ActionTool
+        #                         ||
+        #                         _firstType == UtilElementType::DisplayTool
+        #                         ||
+        #                         _firstType == UtilElementType::OutputTool
+        #                         ||
+        #                         _firstType == UtilElementType::Form
+        #                         ||
+        #                         _firstType == UtilElementType::WebUrlItem
+        #                         ||
+        #                         _firstType == UtilElementType::WebActionItem
+        #                         ||
+        #                         _firstType == UtilElementType::WebManagedContentItem
+        #                         ||
+        #                         _firstType == UtilElementType::SecDuty
+        #                         ||
+        #                         _firstType == UtilElementType::SecPrivilege
+        #                         ||
+        #                         _firstType == UtilElementType::Table
+        #                         ||
+        #                         _firstType == UtilElementType::InfoPart
+        #                         ||
+        #                         _firstType == UtilElementType::Report
+        #                         ||
+        #                         _firstType == UtilElementType::WebControl
+        #                         ||
+        #                         _firstType == UtilElementType::SecCodePermission
+        #                         ||
+        #                         firstNodeTypeId == #NT_DBVIEW
+        #                         ||
+        #                         firstNodeTypeId == #NT_OPERATION
+        #                         ||
+        #                         firstNodeTypeId == #NT_SSRSREPORTDESIGN
+        #                        )
+        #                        {
+        #                            return 1;
+        #                        }
+        #                    }
+        #                    return 0;
+        #
+        #                //
+        #                // Only show 'Xref Analyzer' menu item when the Analyzer form is present
+        #                //
+        #
+        #                case menuitemDisplayStr(SysSecAnalysisAddIn):
+        #                    if (this.selectionCount() == 1 &&
+        #                        TreeNode::findNode(@'\Forms\SysSecAnalysis') != null)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                //
+        #                // Only show 'Metadata Analyzer' menu item when the Analyzer form is present
+        #                //
+        #                case menuitemDisplayStr(SysSecAnalysisAddInMetadataAnalyzer):
+        #                    if (this.selectionCount() == 1                          &&
+        #                        (_firstType==UtilElementType::Form                  ||
+        #                         _firstType==UtilElementType::DisplayTool           ||
+        #                         _firstType==UtilElementType::OutputTool            ||
+        #                         _firstType==UtilElementType::ActionTool            ||
+        #                         _firstType==UtilElementType::WebActionItem         ||
+        #                         _firstType==UtilElementType::WebUrlItem            ||
+        #                         _firstType==UtilElementType::WebDisplayContentItem ||
+        #                         _firstType==UtilElementType::WebManagedContentItem ||
+        #                         _firstType==UtilElementType::WebOutputContentItem) &&
+        #                        TreeNode::findNode(@'\Forms\SysSecAnalysisMetadataAnalyzer') != null)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                //
+        #                // Only show 'Reverse Engineer'menu item
+        #                // on projects and perspective as we only want to reverse
+        #                // engineer project elements
+        #                //
+        #                case menuitemDisplayStr( SysVisioAddIn ):
+        #                    if ( firstNode.handle() == classNum(ProjectNode) &&     // launch from project node
+        #                         match(#pathProjects,firstNode.treeNodePath()))
+        #                    {
+        #                        return 1;
+        #                    }
+        #
+        #                    if (firstNode.treeNodeType().id() == #NT_PERSPECTIVE)    // launch from perspective node
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(XRefReferencesUsedBy):
+        #                    if (this.selectionCount() == 1 &&
+        #                        !firstNode.AOTIsOld() &&                            //Does not work for old nodes
+        #                        xRefNames::existTreeNodeAnyLayer(this.first()))
+        #                        // xRefNames::existTreeNode(this.first(),true))     //only show Used By, if there are anything to show
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(XRefReferencesUsing):
+        #                    if (this.selectionCount() == 1 &&
+        #                        firstUtilNode &&
+        #                        !firstNode.AOTIsOld() &&                            //Does not work for old nodes
+        #                        xRefPaths::find(SysTreeNode::getPath(this.first())))       // only show Using, if anything are used
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(XRefNames):
+        #                    if (this.selectionCount() == 1 &&
+        #                        !firstNode.AOTIsOld() &&                            //Does not work for old nodes
+        #                        xRefNames::existTreeNode(this.first(),false))       // only show Names, if there are anything to show
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(SysTypeHierarchyBrowser):
+        #                    if (this.selectionCount() != 1 ||
+        #                        firstNode.AOTIsOld()                                //Does not work for old nodes
+        #                       )
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (SysTypeHierarchy::treenode2Type(firstNode, firstApplObjectNode))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(SysTableBrowser):
+        #                    if (this.selectionCount() != 1 ||
+        #                        firstNode.AOTIsOld()                               //Does not work for old nodes
+        #                       )
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (!docNode &&
+        #                        _firstType==UtilElementType::Table)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return this.verifyDatasource();
+        #
+        #                case menuitemDisplayStr(SysTableForm):
+        #                    if (aUtilElementTypeSeleced[UtilElementType::Table + 1] &&
+        #                        !firstNode.AOTIsOld()                               //Does not work for old nodes
+        #                        )
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(SysDictIndexShowDuplicates):
+        #                    if (this.selectionCount() != 1 ||
+        #                        firstNode.AOTIsOld()                               //Does not work for old nodes
+        #                       )
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (_firstType==UtilElementType::TableIndex)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(AxdWizard):
+        #                    if(this.selectionCount() != 1)
+        #                        return 0;
+        #
+        #                    if(_firstType == UtilElementType::Query)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(WorkflowAOTWizardApproval):
+        #                    if ((this.selectionCount() == 1) && (firstNode.treeNodePath() == #WorkflowApprovalTasksPath))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(WorkflowAOTWizardTask):
+        #                    if ((this.selectionCount() == 1) && (firstNode.treeNodePath() == #WorkflowTasksPath))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemDisplayStr(WorkflowAOTWizardType):
+        #                    if ((this.selectionCount() == 1) && (firstNode.treeNodePath() == #WorkflowTypesPath))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #                case menuitemDisplayStr(SysBPStyleCheckAnalysis):
+        #                    if ((this.selectionCount() == 1) && (_firstType == UtilElementType::Form))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #                case menuitemDisplayStr(SysLcsIssueSearchAotItem):
+        #                    if ((this.selectionCount() == 1) && (firstNode.treeNodeType().isRootElement()))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #            }
+        #            break;
+        #
+        #        case MenuItemType::Output:
+        #            switch (menuItemName)
+        #            {
+        #                case menuitemOutputStr( SysXmlDocumentationCreateFile ):
+        #                    if ( firstNode.handle() == classNum(ProjectNode) &&     // Only launch from project node
+        #                         match(#pathProjects,firstNode.treeNodePath()))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #            }
+        #            break;
+        #
+        #        case MenuItemType::Action:
+        #            switch (menuItemName)
+        #            {
+        #                case menuitemActionStr(SysUpgradeProjectMarkAsResolved):
+        #                    return SysUpgradeProjectMarkAsResolved::canMarkAsResolved(this, SysUpgradeConflictManuallyResolved::Resolved);
+        #                case menuitemActionStr(SysUpgradeProjectMarkAsUnresolved):
+        #                    return SysUpgradeProjectMarkAsResolved::canMarkAsResolved(this, SysUpgradeConflictManuallyResolved::Unresolved);
+        #
+        #                case menuitemActionStr(SysUpgradeProjectMarkAsResolvedRecursive):
+        #                    return SysUpgradeProjectMarkAsResolved::canMarkAsResolvedIncludeSubnodes(this, SysUpgradeConflictManuallyResolved::Resolved);
+        #                case menuitemActionStr(SysUpgradeProjectMarkAsUnresolvedRecursi):
+        #                    return SysUpgradeProjectMarkAsResolved::canMarkAsResolvedIncludeSubnodes(this, SysUpgradeConflictManuallyResolved::Unresolved);
+        #
+        #                case menuitemActionStr(SysUpgradeDetectConflictsRerun):
+        #                    return SysUpgradeDetectConflicts::canDetectConflictsRerun(this);
+        #
+        #                case menuitemActionStr(SysUpgradeConflictCodeRuleAutoResolve):
+        #                    return SysUpgradeConflictCodeRuleAutoResolve::construct().showInContextMenu(this);
+        #
+        #                case menuitemActionStr(SysUpgradeConflictCodeRuleRevertResolve):
+        #                    return SysUpgradeConflictCodeRuleRevertResolve::construct().showInContextMenu(this);
+        #
+        #                case menuitemActionStr(SysUpgradeConflictCodeRuleCompareUpgrade):
+        #                    return SysUpgradeConflictCodeRuleCompareUpgrade::construct().showInContextMenu(this);
+        #
+        #                case menuitemActionStr(SysUpgradeConflictCodeRuleCompareOrigina):
+        #                    return SysUpgradeConflictCodeRuleCompareOrigina::construct().showInContextMenu(this);
+        #
+        #                case menuitemActionStr(xRefUpdate):
+        #                    if (!firstNode.AOTIsOld())
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysVersionControlCheckOut):
+        #                    if (versioncontrol &&
+        #                        versioncontrol.parmSysVersionControlSystem() &&
+        #                        this.selectionCount() == 1 && firstApplObjectNode &&
+        #                        !firstNode.AOTIsOld() &&                            //Does not work for old nodes
+        #                        !allowEdit)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysVersionControlUndoCheckOut):
+        #                    if (versioncontrol &&
+        #                        versioncontrol.parmSysVersionControlSystem() &&
+        #                        this.selectionCount() == 1 && firstApplObjectNode &&
+        #                        !firstNode.AOTIsOld() &&                            //Does not work for old nodes
+        #                        allowEdit)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(xRefUpdateTmpReferences):
+        #                    if (!docNode &&
+        #                        this.selectionCount() == 1 && firstUtilNode &&
+        #                        !firstNode.AOTIsOld())                            //Does not work for old nodes
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysSourceReplaceSyntax):
+        #                    if (!docNode &&
+        #                        firstUtilNode &&
+        #                        allowEdit &&
+        #                        !firstNode.AOTIsOld())                             //Does not work for old nodes
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysImpactAnalysis):
+        #                    if (!docNode &&
+        #                        firstNode.treeNodeType().isRootElement() &&
+        #                        !firstNode.AOTIsOld())                               //Does not work for old nodes
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysSourceNameWash):
+        #                    if (!docNode &&
+        #                        firstUtilNode &&
+        #                        allowEdit &&
+        #                        !firstNode.AOTIsOld() &&
+        #                        (_firstType &&
+        #                          (_firstType == UtilElementType::Table                 ||
+        #                           _firstType == UtilElementType::TableInstanceMethod   ||
+        #                           _firstType == UtilElementType::TableStaticMethod     ||
+        #                           _firstType == UtilElementType::Macro                 ||
+        #                           _firstType == UtilElementType::Class                 ||
+        #                           _firstType == UtilElementType::ClassInstanceMethod   ||
+        #                           _firstType == UtilElementType::ClassStaticMethod     ||
+        #                           _firstType == UtilElementType::Form                  ||
+        #                           _firstType == UtilElementType::Report                ||
+        #                           _firstType == UtilElementType::ReportTemplate        ||
+        #                           _firstType == UtilElementType::ReportSectionTemplate ||
+        #                           _firstType == UtilElementType::Query                 ||
+        #                           _firstType == UtilElementType::Job                   ||
+        #                           _firstType == UtilElementType::WebForm)))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysBPCheck):
+        #                    if  (_firstType &&_firstType == UtilElementType::Job)
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (firstNode.AOTIsOld())
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (docNode)
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    return 1;
+        #
+        #                case menuitemActionStr(SysSourceReplaceText):
+        #                    if (!docNode &&
+        #                        allowEdit &&
+        #                        this.selectionCount() == 1 &&
+        #                        firstUtilNode &&
+        #                        !firstNode.AOTIsOld())                            //Does not work for old nodes
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(sysCompare):
+        #                    if (_firstType == UtilElementType::PrivateProject       ||
+        #                        _firstType == UtilElementType::SharedProject)
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (this.selectionCount() == 2)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    if (this.selectionCount() == 1)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(sysCompileForward):
+        #                    if (this.selectionCount() == 1 &&
+        #                        !firstNode.AOTIsOld()      &&                         //Does not work for old nodes
+        #                        _firstType==UtilElementType::Class)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(sysTreenodeCopyToCurrentLayer):
+        #                    if (firstNode && firstNode.AOTIsOld() && firstNode.treeNodeType().isRootElement())
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysTreeNodeApplObjectOpenNewWindow):
+        #                    if (!docNode &&
+        #                        anyUtilElementTypeSeleced &&
+        #                        !firstNode.AOTIsOld())
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysTreeNodeOpenNewWindow),
+        #                     menuitemActionStr(SysTreeNodeShowProperties):
+        #
+        #                    if (docNode ||
+        #                        firstNode.treeNodeType().id() == 27 ||    //Project nodes
+        #                        firstNode.treeNodeType().id() == 29 ||
+        #                        firstNode.treeNodeType().id() == 30 ||
+        #                        firstNode.treeNodeType().id() == 31 )
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    return 1;                                              //also for old
+        #
+        #                case menuitemActionStr(SysTreeNodeParentOpenNewWindow):
+        #                    if (docNode ||
+        #                        firstNode.treeNodeType().id() == 27 ||    //Project nodes
+        #                        firstNode.treeNodeType().id() == 29 ||
+        #                        firstNode.treeNodeType().id() == 30 ||
+        #                        firstNode.treeNodeType().id() == 31 )
+        #                    {
+        #                        return 0;
+        #                    }
+        #                    if (!firstNode.AOTIsOld())
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                // Open using in window
+        #                case menuitemActionStr(SysOpenNewWindowTable):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowTable::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowExtendedType):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowExtendedType::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowEnum):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowEnum::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowSecurityKey):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowSecurityKey::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowConfigurationKey):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowConfigurationKey::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowClass):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowClass::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowForm):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowForm::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowReport):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowReport::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowMenuItem):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowMenuItem::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowFieldGroup):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowFieldGroup::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowQuery):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowQuery::verifyItem(this);
+        #                case menuitemActionStr(SysOpenNewWindowService):
+        #                    return !firstNode.AOTIsOld() && SysOpenNewWindowService::verifyItem(this);
+        #
+        #                // old layer
+        #                case menuitemActionStr(sysOpenOldSys):
+        #                case menuitemActionStr(sysOpenOldSyp):
+        #                case menuitemActionStr(sysOpenOldGls):
+        #                case menuitemActionStr(sysOpenOldGlp):
+        #                case menuitemActionStr(sysOpenOldFpk):
+        #                case menuitemActionStr(sysOpenOldFpp):
+        #                case menuitemActionStr(sysOpenOldSln):
+        #                case menuitemActionStr(sysOpenOldSlp):
+        #                case menuitemActionStr(sysOpenOldIsv):
+        #                case menuitemActionStr(sysOpenOldIsp):
+        #                case menuitemActionStr(sysOpenOldVar):
+        #                case menuitemActionStr(sysOpenOldVap):
+        #                case menuitemActionStr(sysOpenOldCus):
+        #                case menuitemActionStr(sysOpenOldCup):
+        #                case menuitemActionStr(sysOpenOldUsr):
+        #                case menuitemActionStr(sysOpenOldUsp):
+        #                    utilEntryLevel = str2enum(utilEntryLevel, subStr(menuItemName, strLen(menuItemName)-2, 3));
+        #                    if (this.selectionCount() == 1 &&
+        #                        oldMask & (1 << utilEntryLevel))
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                // Test jobs
+        #                case menuitemActionStr(SysTestToolbarOpen):
+        #                    if (this.selectionCount() == 1)
+        #                    {
+        #                        switch (firstNode.handle())
+        #                        {
+        #                            case classNum(ProjectNode):
+        #                            case classNum(ProjectGroupNode):
+        #                                return 1;
+        #
+        #                            case classNum(ClassNode):
+        #                                classNode = firstNode;
+        #                                if (classNode &&
+        #                                    (SysTestProject::implementsSysTestable(classNode.iD()) ||
+        #                                     SysDictClass::isSuperclass(classNode.iD(), classNum(SysTestSuite))))
+        #
+        #                                {
+        #                                    return 1;
+        #                                }
+        #                                return 0;
+        #
+        #                            case classNum(MemberFunction):
+        #                                parentNode = firstNode.AOTparent();
+        #                                if (parentNode &&
+        #                                    (parentNode.handle() == classNum(ClassNode) || parentNode is ClassNode) &&
+        #                                    SysTestProject::implementsSysTestable(parentNode.applObjectId()))
+        #                                {
+        #                                    testable = classfactory.createClass(parentNode.applObjectId(), false) as SysTestable;
+        #                                    if (testable)
+        #                                    {
+        #                                        listEnumerator = testable.testMethods().getEnumerator();
+        #                                        while (listEnumerator.moveNext())
+        #                                        {
+        #                                            if (listEnumerator.current() == firstNode.treeNodeName())
+        #                                                return 1;
+        #                                        }
+        #                                    }
+        #                                }
+        #                                return 0;
+        #                        }
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(AxdGenerateAxdQuery):
+        #                    if(this.selectionCount() != 1)
+        #                        return 0;
+        #
+        #                    if(_firstType == UtilElementType::Form     ||
+        #                       _firstType == UtilElementType::Report   ||
+        #                       _firstType == UtilElementType::WebForm )
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(AifRegisterService):
+        #                    if(this.selectionCount() != 1)
+        #                        return 0;
+        #
+        #                    if(_firstType == UtilElementType::Service)
+        #                    {
+        #                        return 1;
+        #                    }
+        #                    return 0;
+        #
+        #                case menuitemActionStr(SysXppILIncrementalBuild):
+        #                case menuitemActionStr(SysXppILFullBuild):
+        #                    // enable for AOT root node only
+        #                    return firstNode.treeNodeType().id() == 1;
+        #                case menuitemActionStr(SysSecSecurityApply):
+        #                    return SysSecHelper::showApplyChangesContextMenu(firstNode);
+        #            }
+        #    }
+        #//    infolog.mayReloadMenu(true);
+        #
+        #    if (firstNode.AOTIsOld())
+        #        return 0;
+        #    return 1;
+        #}
+        #
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: SysOpenNewWindowClass unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #SysOpenNewWindowClass
+    PROPERTIES
+      Name                #SysOpenNewWindowClass
+      Extends             #SysOpenNewWindowApplObject
+      Origin              #{2D150AA1-0000-1000-0B14-A2C1E2718CDF}
+      LegacyId            #2721
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #usingTreeNode
+        #TreeNode usingTreeNode(TreeNode _treeNode)
+        #{
+        #    TreeNode treeNodeToOpen;
+        #    SysDictClass dictClass;
+        #    MenuFunction menuFunction;
+        #
+        #    switch (_treeNode.TreeNodeType().id())
+        #    {
+        #        case #NT_CLASS:     // Class - open the parent
+        #            dictClass = new SysDictClass(_treeNode.applObjectId());
+        #            if (dictClass && dictClass.extend())
+        #            {
+        #                dictClass = new SysDictClass(dictClass.extend());
+        #                if (dictClass)
+        #                {
+        #                    treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+dictClass.name());
+        #                }
+        #            }
+        #            break;
+        #
+        #        case #NT_FUNCITEM:  // Menu Items
+        #            menuFunction = _treeNode;
+        #            if (menuFunction.objectType() == UtilElementType::Class &&    // Class
+        #                menuFunction.object())
+        #            {
+        #                treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+menuFunction.object());
+        #            }
+        #            break;
+        #
+        #        case #NT_SERVICE:
+        #            dictClass = new SysDictClass(className2Id(_treeNode.AOTgetProperty('Class')));
+        #            if (dictClass)
+        #            {
+        #                treeNodeToOpen = infolog.findNode(#ClassesPath+'\\'+dictClass.name());
+        #            }
+        #
+        #    }
+        #
+        #    return treeNodeToOpen;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: SysOpenNewWindowMenuItem unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #SysOpenNewWindowMenuItem
+    PROPERTIES
+      Name                #SysOpenNewWindowMenuItem
+      Extends             #SysOpenNewWindowApplObject
+      Origin              #{2D180B00-0000-1000-19DE-F0F2C443E5DD}
+      LegacyId            #2816
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #usingTreeNode
+        #TreeNode usingTreeNode(TreeNode _treeNode)
+        #{
+        #    TreeNode treeNodeToOpen;
+        #    str menuItemType;
+        #    boolean menuItemButtonFound;
+        #    boolean dropDialogButtonFound;
+        #
+        #    switch (_treeNode.TreeNodeType().id())
+        #    {
+        #        case #NT_MENUITEM:               // Menu item in Menu
+        #            treeNodeToOpen = infolog.findNode(#MenuItemsPath+'\\' +
+        #                                          findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemType)+'\\' +
+        #                                          findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemName));
+        #            break;
+        #
+        #        case #NT_FORMFIELDLAYOUT:     // Formcontrol, but MenuItemButton?
+        #            menuItemButtonFound = match('<MenuItemButton\\:',_treeNode.treeNodeName()) == 1 ? true : false;
+        #            dropDialogButtonFound = match('<DropDialogButton\\:',_treeNode.treeNodeName()) == 1 ? true : false;
+        #            if(dropDialogButtonFound)
+        #            {
+        #                menuItemType = enum2str(MenuItemType::Display);
+        #            }
+        #            if(menuItemButtonFound)
+        #            {
+        #                menuItemType = findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemType);
+        #            }
+        #            treeNodeToOpen = infolog.findNode(#MenuItemsPath+'\\' + menuItemType +'\\' +
+        #                                              findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemName));
+        #
+        #            break;
+        #
+        #        case #NT_SECENTRYPOINTNODE:
+        #            switch (_treeNode.AOTgetProperty('ObjectType'))
+        #            {
+        #                case 'MenuItemDisplay':
+        #                    treeNodeToOpen = infolog.findNode(#MenuItemsDisplayPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+        #                    break;
+        #
+        #                case 'MenuItemOutput':
+        #                    treeNodeToOpen = infolog.findNode(#MenuItemsOutputPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+        #                    break;
+        #
+        #                case 'MenuItemAction':
+        #                    treeNodeToOpen = infolog.findNode(#MenuItemsActionPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+        #                    break;
+        #            }
+        #            break;
+        #    }
+        #
+        #    return treeNodeToOpen;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: SysOpenNewWindowQuery unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #SysOpenNewWindowQuery
+    PROPERTIES
+      Name                #SysOpenNewWindowQuery
+      Extends             #SysOpenNewWindowApplObject
+      Origin              #{7094C52A-4B1D-4B85-8182-E5E9D1E2AB47}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #public class SysOpenNewWindowQuery extends SysOpenNewWindowApplObject
+        #{
+        #
+        #}
+      ENDSOURCE
+      SOURCE #usingTreeNode
+        #TreeNode usingTreeNode(TreeNode _treeNode)
+        #{
+        #    TreeNode treeNodeToOpen;
+        #    QueryName queryName;
+        #
+        #    switch (_treeNode.TreeNodeType().id())
+        #    {
+        #        case #NT_QE:
+        #            queryName = _treeNode.treeNodeName();
+        #            treeNodeToOpen = infolog.findNode(#QueriesPath+'\\'+queryName);
+        #            break;
+        #    }
+        #
+        #    return treeNodeToOpen;
+        #}
+      ENDSOURCE
+      SOURCE #main
+        #static void main(Args args)
+        #{
+        #    SysOpenNewWindowApplObject sysOpenNewWindowApplObject = new SysOpenNewWindowQuery();
+        #    ;
+        #    if (SysContextMenu::startedFrom(args))
+        #    {
+        #        sysOpenNewWindowApplObject.runsysContextMenu(args.parmObject());
+        #    }
+        #}
+      ENDSOURCE
+      SOURCE #verifyItem
+        #static boolean verifyItem(SysContextMenu _sysContextMenu)
+        #{
+        #    if (new SysOpenNewWindowQuery().usingTreeNode(_sysContextMenu.first()))
+        #    {
+        #        return true;
+        #    }
+        #    return false;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: SysOpenNewWindowService unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #SysOpenNewWindowService
+    PROPERTIES
+      Name                #SysOpenNewWindowService
+      Extends             #SysOpenNewWindowApplObject
+      Origin              #{F2C7DB1D-D1BF-4986-855A-607996F7A7F9}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #public class SysOpenNewWindowService extends SysOpenNewWindowApplObject
+        #{
+        #
+        #}
+      ENDSOURCE
+      SOURCE #usingTreeNode
+        #TreeNode usingTreeNode(TreeNode _treeNode)
+        #{
+        #    TreeNode treeNodeToOpen;
+        #    IdentifierName serviceName;
+        #
+        #    switch (_treeNode.TreeNodeType().id())
+        #    {
+        #        case #NT_SERVICE_NODE_REFERENCE:
+        #            serviceName = _treeNode.AOTgetProperty('Service');
+        #            treeNodeToOpen = infolog.findNode(#ServicesPath+'\\'+serviceName);
+        #            break;
+        #
+        #    }
+        #
+        #    return treeNodeToOpen;
+        #}
+      ENDSOURCE
+      SOURCE #main
+        #static void main(Args args)
+        #{
+        #    SysOpenNewWindowApplObject sysOpenNewWindowApplObject = new SysOpenNewWindowService();
+        #    ;
+        #    if (SysContextMenu::startedFrom(args))
+        #    {
+        #        sysOpenNewWindowApplObject.runsysContextMenu(args.parmObject());
+        #    }
+        #}
+      ENDSOURCE
+      SOURCE #verifyItem
+        #static boolean verifyItem(SysContextMenu _sysContextMenu)
+        #{
+        #    if (new SysOpenNewWindowService().usingTreeNode(_sysContextMenu.first()))
+        #    {
+        #        return true;
+        #    }
+        #    return false;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: MNU
+
+; Microsoft Dynamics AX Menu : SysContextMenu unloaded
+; --------------------------------------------------------------------------------
+  MNUVERSION 5
+  
+  MENU #SysContextMenu
+    PROPERTIES
+      Name                #SysContextMenu
+      Label               #@SYS28637
+      SecurityKey         #SysDevelopment
+      Origin              #{100E0000-0000-1000-FB09-5DBF82A26477}
+    ENDPROPERTIES
+    
+    MENUITEM
+      PROPERTIES
+        Name                #Compare existing code to proposed fix
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeConflictCodeRuleCompareUpgrade
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Auto-resolve source code rule conflict
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeConflictCodeRuleAutoResolve
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Compare altered code to original code
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeConflictCodeRuleCompareOrigina
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Revert auto-resolve source code rule conflict
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeConflictCodeRuleRevertResolve
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Mark as resolved
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeProjectMarkAsResolved
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Mark as unresolved
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeProjectMarkAsUnresolved
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Mark as resolved (including subnodes)
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeProjectMarkAsResolvedRecursive
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Mark as unresolved (including subnodes)
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeProjectMarkAsUnresolvedRecursi
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Rerun conflict detection
+        MenuItemType        #Action
+        MenuItemName        #SysUpgradeDetectConflictsRerun
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    SEPARATOR
+    MENU #@SYS24666
+      PROPERTIES
+        Name                #MenuxRef
+        Label               #@SYS24666
+      ENDPROPERTIES
+      
+      MENUITEM
+        PROPERTIES
+          Name                #Used by
+          MenuItemName        #XRefReferencesUsedBy
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Using (instant view)
+          MenuItemType        #Action
+          MenuItemName        #xRefUpdateTmpReferences
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Names
+          MenuItemName        #XRefNames
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Using
+          MenuItemName        #XRefReferencesUsing
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Update
+          MenuItemType        #Action
+          MenuItemName        #xRefUpdate
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+    ENDMENU
+    MENU #@SYS310448
+      PROPERTIES
+        Name                #SecTools
+        Label               #@SYS310448
+      ENDPROPERTIES
+      
+      MENUITEM
+        PROPERTIES
+          Name                #XRef analyzer
+          MenuItemName        #syssecanalysisaddIn
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Metadata analyzer
+          MenuItemName        #syssecanalysisaddInmetadataAnalyzer
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #View related security roles
+          MenuItemName        #SysSecObjectsAnalyze
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #View related security objects
+          MenuItemName        #SysSecObjectsInRole
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Apply changes
+          MenuItemType        #Action
+          MenuItemName        #SysSecSecurityApply
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+    ENDMENU
+    SEPARATOR
+    MENUITEM
+      PROPERTIES
+        Name                #Table browser
+        MenuItemName        #sysTableBrowser
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Auto-report
+        MenuItemName        #SysTableForm
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    SEPARATOR
+    MENUITEM
+      PROPERTIES
+        Name                #Reverse engineer
+        MenuItemName        #SysVisioAddIn
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Extract XML documentation
+        MenuItemType        #Output
+        MenuItemName        #SysXmlDocumentationCreateFile
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Run tests
+        MenuItemType        #Action
+        MenuItemName        #SysTestToolbarOpen
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Type hierarchy browser
+        MenuItemName        #SysTypeHierarchyBrowser
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    SEPARATOR
+    MENUITEM
+      PROPERTIES
+        Name                #Compare
+        MenuItemType        #Action
+        MenuItemName        #sysCompare
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Compile forward
+        MenuItemType        #Action
+        MenuItemName        #sysCompileForward
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Impact Analysis
+        MenuItemType        #Action
+        MenuItemName        #SysImpactAnalysis
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Find and replace
+        MenuItemType        #Action
+        MenuItemName        #SysSourceReplaceText
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Syntactic renaming
+        MenuItemType        #Action
+        MenuItemName        #SysSourceReplaceSyntax
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Duplicates
+        MenuItemName        #SysDictIndexShowDuplicates
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENU #@SYS16245
+      PROPERTIES
+        Name                #MenuCopy
+        Label               #@SYS16245
+        NeededAccessLevel   #NoAccess
+      ENDPROPERTIES
+      
+      MENUITEM
+        PROPERTIES
+          Name                #Entire path
+          MenuItemType        #Action
+          MenuItemName        #SysTreeNodePathCopyToClipboard
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Name
+          MenuItemType        #Action
+          MenuItemName        #SysTreeNodeNameCopyToClipboard
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Copy to current layer
+          MenuItemType        #Action
+          MenuItemName        #systreenodecopyToCurrentLayer
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+    ENDMENU
+    MENUITEM
+      PROPERTIES
+        Name                #Check best practices
+        MenuItemType        #Action
+        MenuItemName        #SysBPCheck
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Check form style best practices
+        MenuItemName        #SysBPStyleCheckAnalysis
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Source code title case update
+        MenuItemType        #Action
+        MenuItemName        #SysSourceNameWash
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Generate Axd query
+        MenuItemType        #Action
+        MenuItemName        #AxdGenerateAxdQuery
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #AIF Document Service Wizard
+        MenuItemName        #AxdWizard
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Register service
+        MenuItemType        #Action
+        MenuItemName        #AifRegisterService
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Help properties
+        MenuItemName        #HelpTopicID
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Lookup in Issue Search
+        MenuItemName        #SysLcsIssueSearchAotItem
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    SEPARATOR
+    MENU #@SYS53405
+      PROPERTIES
+        Name                #SysContextMenuOpenNewWindow
+        Label               #@SYS53405
+        SetCompany          #Yes
+      ENDPROPERTIES
+      
+      MENUITEM
+        PROPERTIES
+          Name                #Open application object window
+          MenuItemType        #Action
+          MenuItemName        #SysTreeNodeApplObjectOpenNewWindow
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open parent in window
+          MenuItemType        #Action
+          MenuItemName        #SysTreeNodeParentOpenNewWindow
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open new window
+          MenuItemType        #Action
+          MenuItemName        #SysTreeNodeOpenNewWindow
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENU #@SYS57839
+        PROPERTIES
+          Name                #MenuOpenOldLayer
+          Label               #@SYS57839
+          NeededAccessLevel   #NoAccess
+        ENDPROPERTIES
+        
+        MENUITEM
+          PROPERTIES
+            Name                #usp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldUsp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #usr
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldUsr
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #cup
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldCup
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #cus
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldCus
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #vap
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldVap
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #var
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldVar
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #isp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldIsp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #isv
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldIsv
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #slp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldSlp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #sln
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldSln
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #fpp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldFpp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #fpk
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldFpk
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #glp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldGlp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #gls
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldGls
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #syp
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldSyp
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+        MENUITEM
+          PROPERTIES
+            Name                #sys
+            MenuItemType        #Action
+            MenuItemName        #SysOpenOldSys
+          ENDPROPERTIES
+          
+        ENDMENUITEM
+      ENDMENU
+      MENUITEM
+        PROPERTIES
+          Name                #Open used table
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowTable
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used table field group
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowFieldGroup
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used Extended Data Type
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowExtendedType
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used Enum
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowEnum
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used class
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowClass
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used form
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowForm
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used report
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowReport
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used menu item
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowMenuItem
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used Query
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowQuery
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+      MENUITEM
+        PROPERTIES
+          Name                #Open used Service
+          MenuItemType        #Action
+          MenuItemName        #SysOpenNewWindowService
+        ENDPROPERTIES
+        
+      ENDMENUITEM
+    ENDMENU
+    MENUITEM
+      PROPERTIES
+        Name                #Properties
+        MenuItemType        #Action
+        MenuItemName        #SysTreeNodeShowProperties
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Full CIL generation from X++
+        MenuItemType        #Action
+        MenuItemName        #SysXppILFullBuild
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Incremental CIL generation from X++
+        MenuItemType        #Action
+        MenuItemName        #SysXppILIncrementalBuild
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Approval wizard...
+        MenuItemName        #WorkflowAOTWizardApproval
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Task wizard...
+        MenuItemName        #WorkflowAOTWizardTask
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+    MENUITEM
+      PROPERTIES
+        Name                #Workflow type wizard...
+        MenuItemName        #WorkflowAOTWizardType
+      ENDPROPERTIES
+      
+    ENDMENUITEM
+  ENDMENU
+  
+
+***Element: PRN
+
+; Microsoft Dynamics AX Project : SysOpenNewWindow unloaded
+; --------------------------------------------------------------------------------
+  PROJECTVERSION 2
+  
+  PROJECT #SysOpenNewWindow
+  SHARED
+  PROPERTIES
+    Name                #SysOpenNewWindow
+    Origin              #{E91630A8-2134-4E22-BC10-EB9A588FE903}
+  ENDPROPERTIES
+  
+    PROJECTCLASS ProjectNode
+    GROUP #MenuItem Action
+      PROPERTIES
+        Name                #MenuItem Action
+        ProjectGroupType    #Action
+        GroupMask           #<SysOpenNew
+        PreventEditProperties #No
+      ENDPROPERTIES
+      
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowClass
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowConfigurationKey
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowEnum
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowExtendedType
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowFieldGroup
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowForm
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowMenuItem
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowQuery
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowReport
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowSecurityKey
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowService
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 3
+        UTILOBJECTID 0
+        NODETYPE 296
+        NAME #SysOpenNewWindowTable
+      ENDNODE
+      ENDGROUP
+      
+    GROUP #SysContextMenu
+      PROPERTIES
+        Name                #SysContextMenu
+        ProjectGroupType    #Classes
+        GroupMask           #<SysContextMenu
+        PreventEditProperties #No
+      ENDPROPERTIES
+      
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 968
+        NODETYPE 329
+        NAME #SysContextMenu
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1038
+        NODETYPE 329
+        NAME #SysContextMenuAOT
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1111
+        NODETYPE 329
+        NAME #SysContextMenuCompare
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1039
+        NODETYPE 329
+        NAME #SysContextMenuFind
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1046
+        NODETYPE 329
+        NAME #SysContextMenuTreeNode
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1053
+        NODETYPE 329
+        NAME #SysContextMenuXrefNames
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 4273
+        NODETYPE 329
+        NAME #SysContextMenuxRefReferences
+      ENDNODE
+      ENDGROUP
+      
+    GROUP #SysOpenNew
+      PROPERTIES
+        Name                #SysOpenNew
+        ProjectGroupType    #Classes
+        GroupMask           #<SysOpenNew
+        PreventEditProperties #No
+      ENDPROPERTIES
+      
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2710
+        NODETYPE 329
+        NAME #SysOpenNewWindowApplObject
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2721
+        NODETYPE 329
+        NAME #SysOpenNewWindowClass
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 7521
+        NODETYPE 329
+        NAME #SysOpenNewWindowConfigurationKey
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2715
+        NODETYPE 329
+        NAME #SysOpenNewWindowEnum
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2714
+        NODETYPE 329
+        NAME #SysOpenNewWindowExtendedType
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 4530
+        NODETYPE 329
+        NAME #SysOpenNewWindowFieldGroup
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2718
+        NODETYPE 329
+        NAME #SysOpenNewWindowForm
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2816
+        NODETYPE 329
+        NAME #SysOpenNewWindowMenuItem
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1024210
+        NODETYPE 329
+        NAME #SysOpenNewWindowQuery
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2817
+        NODETYPE 329
+        NAME #SysOpenNewWindowReport
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 7520
+        NODETYPE 329
+        NAME #SysOpenNewWindowSecurityKey
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 1024211
+        NODETYPE 329
+        NAME #SysOpenNewWindowService
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 45
+        UTILOBJECTID 2719
+        NODETYPE 329
+        NAME #SysOpenNewWindowTable
+      ENDNODE
+      ENDGROUP
+      
+    BEGINNODE
+      FILETYPE 0
+      UTILTYPE 16
+      UTILOBJECTID 0
+      NODETYPE 205
+      NAME #SysContextMenu
+    ENDNODE
+  ENDPROJECT
+  
+
+***Element: END

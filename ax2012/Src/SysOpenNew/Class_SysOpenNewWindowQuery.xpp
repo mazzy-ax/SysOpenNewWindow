@@ -1,0 +1,39 @@
+public class SysOpenNewWindowQuery extends SysOpenNewWindowApplObject
+{
+
+
+    TreeNode usingTreeNode(TreeNode _treeNode)
+    {
+        TreeNode treeNodeToOpen;
+        QueryName queryName;
+
+        switch (_treeNode.TreeNodeType().id())
+        {
+            case #NT_QE:
+                queryName = _treeNode.treeNodeName();
+                treeNodeToOpen = infolog.findNode(#QueriesPath+'\\'+queryName);
+                break;
+        }
+
+        return treeNodeToOpen;
+    }
+
+    static void main(Args args)
+    {
+        SysOpenNewWindowApplObject sysOpenNewWindowApplObject = new SysOpenNewWindowQuery();
+        ;
+        if (SysContextMenu::startedFrom(args))
+        {
+            sysOpenNewWindowApplObject.runsysContextMenu(args.parmObject());
+        }
+    }
+
+    static boolean verifyItem(SysContextMenu _sysContextMenu)
+    {
+        if (new SysOpenNewWindowQuery().usingTreeNode(_sysContextMenu.first()))
+        {
+            return true;
+        }
+        return false;
+    }
+}

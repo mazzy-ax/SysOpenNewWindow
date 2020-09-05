@@ -1,0 +1,40 @@
+public class SysOpenNewWindowService extends SysOpenNewWindowApplObject
+{
+
+
+    TreeNode usingTreeNode(TreeNode _treeNode)
+    {
+        TreeNode treeNodeToOpen;
+        IdentifierName serviceName;
+
+        switch (_treeNode.TreeNodeType().id())
+        {
+            case #NT_SERVICE_NODE_REFERENCE:
+                serviceName = _treeNode.AOTgetProperty('Service');
+                treeNodeToOpen = infolog.findNode(#ServicesPath+'\\'+serviceName);
+                break;
+
+        }
+
+        return treeNodeToOpen;
+    }
+
+    static void main(Args args)
+    {
+        SysOpenNewWindowApplObject sysOpenNewWindowApplObject = new SysOpenNewWindowService();
+        ;
+        if (SysContextMenu::startedFrom(args))
+        {
+            sysOpenNewWindowApplObject.runsysContextMenu(args.parmObject());
+        }
+    }
+
+    static boolean verifyItem(SysContextMenu _sysContextMenu)
+    {
+        if (new SysOpenNewWindowService().usingTreeNode(_sysContextMenu.first()))
+        {
+            return true;
+        }
+        return false;
+    }
+}

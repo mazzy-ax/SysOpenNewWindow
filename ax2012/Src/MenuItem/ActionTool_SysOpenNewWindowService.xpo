@@ -1,0 +1,29 @@
+Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+FTM
+
+; Microsoft Dynamics AX MENUITEM : SysOpenNewWindowService unloaded
+; --------------------------------------------------------------------------------
+  VERSION 1
+  
+  MENUITEM #SysOpenNewWindowService
+    Type: 3
+    PROPERTIES
+      Name                #SysOpenNewWindowService
+      Label               #Open used Service
+      HelpText            #Open a new window with the related Service.
+      ObjectType          #Class
+      Object              #SysOpenNewWindowService
+      ConfigurationKey    #SysDevelopmentXPP
+      SecurityKey         #SysDevelopment
+      ViewUserLicense     #Enterprise
+      MaintainUserLicense #Enterprise
+      WebAccess           #None
+      Origin              #{B0BCD328-52EF-4AE4-B2F8-473B9E8EC99D}
+    ENDPROPERTIES
+    
+  ENDMENUITEM
+  
+
+END

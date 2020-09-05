@@ -1,0 +1,29 @@
+Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+FTM
+
+; Microsoft Dynamics AX MENUITEM : SysOpenNewWindowQuery unloaded
+; --------------------------------------------------------------------------------
+  VERSION 1
+  
+  MENUITEM #SysOpenNewWindowQuery
+    Type: 3
+    PROPERTIES
+      Name                #SysOpenNewWindowQuery
+      Label               #Open used Query
+      HelpText            #Open a new window with the related Query.
+      ObjectType          #Class
+      Object              #SysOpenNewWindowQuery
+      ConfigurationKey    #SysDevelopmentXPP
+      SecurityKey         #SysDevelopment
+      ViewUserLicense     #Enterprise
+      MaintainUserLicense #Enterprise
+      WebAccess           #None
+      Origin              #{3F76A814-7E1F-4A04-B5D4-EC560A7CDC60}
+    ENDPROPERTIES
+    
+  ENDMENUITEM
+  
+
+END

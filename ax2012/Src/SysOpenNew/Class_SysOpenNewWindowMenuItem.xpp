@@ -1,0 +1,52 @@
+
+    TreeNode usingTreeNode(TreeNode _treeNode)
+    {
+        TreeNode treeNodeToOpen;
+        str menuItemType;
+        boolean menuItemButtonFound;
+        boolean dropDialogButtonFound;
+
+        switch (_treeNode.TreeNodeType().id())
+        {
+            case #NT_MENUITEM:               // Menu item in Menu
+                treeNodeToOpen = infolog.findNode(#MenuItemsPath+'\\' +
+                                              findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemType)+'\\' +
+                                              findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemName));
+                break;
+
+            case #NT_FORMFIELDLAYOUT:     // Formcontrol, but MenuItemButton?
+                menuItemButtonFound = match('<MenuItemButton\\:',_treeNode.treeNodeName()) == 1 ? true : false;
+                dropDialogButtonFound = match('<DropDialogButton\\:',_treeNode.treeNodeName()) == 1 ? true : false;
+                if(dropDialogButtonFound)
+                {
+                    menuItemType = enum2str(MenuItemType::Display);
+                }
+                if(menuItemButtonFound)
+                {
+                    menuItemType = findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemType);
+                }
+                treeNodeToOpen = infolog.findNode(#MenuItemsPath+'\\' + menuItemType +'\\' +
+                                                  findProperty(_treeNode.AOTgetProperties(),#PropertyMenuItemName));
+
+                break;
+
+            case #NT_SECENTRYPOINTNODE:
+                switch (_treeNode.AOTgetProperty('ObjectType'))
+                {
+                    case 'MenuItemDisplay':
+                        treeNodeToOpen = infolog.findNode(#MenuItemsDisplayPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+                        break;
+
+                    case 'MenuItemOutput':
+                        treeNodeToOpen = infolog.findNode(#MenuItemsOutputPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+                        break;
+
+                    case 'MenuItemAction':
+                        treeNodeToOpen = infolog.findNode(#MenuItemsActionPath+'\\' + _treeNode.AOTgetProperty('ObjectName'));
+                        break;
+                }
+                break;
+        }
+
+        return treeNodeToOpen;
+    }
