@@ -3,20 +3,20 @@
 [project]:https://github.com/mazzy-ax/SysOpenNewWindow
 [license]:https://github.com/mazzy-ax/SysOpenNewWindow/blob/master/LICENSE
 
-[SysOpenNewWindow][project] &ndash; добавляет пункты в контекстное меню `Add-Ins \ Open new` в [Microsoft Dynamics AX 2009](ax2009), [Microsoft Dynamics AX 2012](ax2012).
+[SysOpenNewWindow][project] &ndash; добавляет пункты в контекстное меню `Add-Ins \ Open new window` в [Microsoft Dynamics AX 2009](ax2009), [Microsoft Dynamics AX 2012](ax2012).
 
 В `ax2009` добавлен пункт меню для объекта `AOT`:
 
-* `View \ Query`: Open new Query
+* `View \ Query`: Open used Query
 
 ![aot with open new window menu in 2009](ax2009/Media/Aot.PNG)
 
 В `ax2012` добавлены пункты меню для объектов `AOT`:
 
-* `View \ Query`: Open new Query
-* `Security \ Entry point`: Open new Menu item
-* `Service`: Open new Class
-* `Service group`: Open new Service
+* `View \ Query`: Open used Query
+* `Security \ Entry point`: Open used Menu item
+* `Service`: Open used Class
+* `Service group`: Open used Service
 
 ![aot with open new window menu in 2012](ax2012/Media/Aot.png)
 
