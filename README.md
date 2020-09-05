@@ -9,7 +9,7 @@
 
 * `View \ Query`: Open new Query
 
-![aot with open new window menu in 2009](ax2009/Media/Aot.png)
+![aot with open new window menu in 2009](ax2009/Media/Aot.PNG)
 
 В `ax2012` добавлены пункты меню для объектов `AOT`:
 
