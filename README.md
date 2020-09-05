@@ -9,7 +9,7 @@
 
 * `View \ Query`: Open new Query
 
-![aot with open new window menu in 2009](ax2009/Media/aot.png)
+![aot with open new window menu in 2009](ax2009/Media/Aot.png)
 
 В `ax2012` добавлены пункты меню для объектов `AOT`:
 
@@ -18,7 +18,7 @@
 * `Service`: Open new Class
 * `Service group`: Open new Service
 
-![aot with open new window menu in 2012](ax2012/Media/aot.png)
+![aot with open new window menu in 2012](ax2012/Media/Aot.png)
 
 ## ChangeLog
 
